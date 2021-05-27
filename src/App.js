@@ -1,4 +1,5 @@
 import * as Header from './components/Header'
+import * as Body from './components/Body'
 
 const App = () => (
   <>
@@ -10,6 +11,25 @@ const App = () => (
         <Header.ButtonGrey />
       </Header.Wrapper>
     </Header.Container>
+
+    <Body.Container>
+      <Body.Wrapper>
+        <Body.SpanPath>Home {`>`} Usuários {`>`} Detalhes</Body.SpanPath>
+        <Body.Title>Lista de Membros</Body.Title>
+
+        <Body.Grid>
+          <Body.BoxFilter>
+            <Body.FilterTitle>Por Estado</Body.FilterTitle>
+            <Body.OptionsBox>
+              <Body.CheckBox id='check' type='checkbox' />
+              <Body.CheckLabel htmlFor='check'>São Paulo</Body.CheckLabel>
+            </Body.OptionsBox>
+          </Body.BoxFilter>
+
+          
+        </Body.Grid>
+      </Body.Wrapper>
+    </Body.Container>
   </>
 )
 
