@@ -26,7 +26,59 @@ const App = () => (
             </Body.OptionsBox>
           </Body.BoxFilter>
 
-          
+          <Body.BoxOrder>
+            <Body.OrderWrapper>
+              <Body.OrderText>Exibindo 9 de 25 itens</Body.OrderText>
+              <Body.OrderText>Ordenar por: Nome</Body.OrderText>
+            </Body.OrderWrapper>
+          </Body.BoxOrder>
+
+          <Body.CardWrapper>
+            <Body.CardBox>
+              <Body.CardInside>
+                <Body.CardImage />
+                <Body.CardName>Joselino Alves</Body.CardName>
+                <Body.CardStreet>Rua Espirito Santo, 2096</Body.CardStreet>
+                <Body.CardAddress>
+                  São José de Ribamar
+                  Paraná - CEP: 96895
+                </Body.CardAddress>
+              </Body.CardInside>
+            </Body.CardBox>
+            <Body.CardBox>
+              <Body.CardInside>
+                <Body.CardImage />
+                <Body.CardName>Joselino Alves</Body.CardName>
+                <Body.CardStreet>Rua Espirito Santo, 2096</Body.CardStreet>
+                <Body.CardAddress>
+                  São José de Ribamar
+                  Paraná - CEP: 96895
+                </Body.CardAddress>
+              </Body.CardInside>
+            </Body.CardBox>
+            <Body.CardBox>
+              <Body.CardInside>
+                <Body.CardImage />
+                <Body.CardName>Joselino Alves</Body.CardName>
+                <Body.CardStreet>Rua Espirito Santo, 2096</Body.CardStreet>
+                <Body.CardAddress>
+                  São José de Ribamar
+                  Paraná - CEP: 96895
+                </Body.CardAddress>
+              </Body.CardInside>
+            </Body.CardBox>
+            <Body.CardBox>
+              <Body.CardInside>
+                <Body.CardImage />
+                <Body.CardName>Joselino Alves</Body.CardName>
+                <Body.CardStreet>Rua Espirito Santo, 2096</Body.CardStreet>
+                <Body.CardAddress>
+                  São José de Ribamar
+                  Paraná - CEP: 96895
+                </Body.CardAddress>
+              </Body.CardInside>
+            </Body.CardBox>
+          </Body.CardWrapper>
         </Body.Grid>
       </Body.Wrapper>
     </Body.Container>

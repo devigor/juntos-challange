@@ -6,6 +6,7 @@ export const BoxFilter = styled.div`
   height: 40rem;
   border: 1px solid #E5E5E5;
   padding: 1.4rem 2.7rem;
+  border-radius: .4rem;
 `
 
 export const FilterTitle = styled.h3`
