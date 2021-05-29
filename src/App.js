@@ -1,7 +1,9 @@
 import * as Header from './components/Header'
 import * as Body from './components/Body'
+import * as Footer from './components/Footer'
 
-const App = () => (
+const App = () => {
+  return (
   <>
     <Header.Container>
       <Header.Wrapper>
@@ -82,7 +84,23 @@ const App = () => (
         </Body.Grid>
       </Body.Wrapper>
     </Body.Container>
+
+    <Footer.Wrapper>
+      <Footer.LogoJuntos src='/assets/imgs/Logo.svg' alt='Logo Juntos Somos Mais branco' />
+      <Footer.SubTitle>
+        Juntos Somos Mais Fidelização S.A.
+      </Footer.SubTitle>
+      <Footer.SocialTitle>
+        Siga-nos nas redes sociais:
+      </Footer.SocialTitle>
+      <Footer.SocialWrapper>
+        <Footer.SocialImg src='/assets/imgs/Facebook.svg' alt='Logo Facebook' />
+        <Footer.SocialImg src='/assets/imgs/LinkedIn.svg' alt='Logo Linkedin' />
+        <Footer.SocialImg src='/assets/imgs/Instagram.svg' alt='Logo Instagram' />
+      </Footer.SocialWrapper>
+    </Footer.Wrapper>
   </>
-)
+  )
+}
 
 export default App
