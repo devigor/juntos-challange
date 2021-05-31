@@ -39,6 +39,7 @@ export const CardName = styled.p`
   font-weight: 700;
   line-height: 26px;
   color: #222D39;
+  text-transform: capitalize;
 `
 
 export const CardStreet = styled.p`
@@ -47,6 +48,7 @@ export const CardStreet = styled.p`
   font-weight: 400;
   line-height: 24px;
   color: #222D39;
+  text-transform: capitalize;
 `
 
 export const CardAddress = styled.p`
@@ -56,4 +58,5 @@ export const CardAddress = styled.p`
   line-height: 16px;
   color: #222D39;
   width: 114px;
+  text-transform: capitalize;
 `

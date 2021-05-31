@@ -1,8 +1,34 @@
+import { useEffect, useState } from 'react'
+
 import * as Header from './components/Header'
 import * as Body from './components/Body'
 import * as Footer from './components/Footer'
 
 const App = () => {
+
+  const [data, setData] = useState(null)
+  const [states, setStates] = useState(null)
+  const [filterState, setFilterState] = useState(null)
+
+  useEffect(async () => {
+    // eslint-disable-next-line no-undef
+    const request = await fetch('http://localhost:8080/results')
+    const response = await request.json()
+    setData(response)
+
+    const states = response.map(({ location }) => location.state)
+    // Return the states to provider the filter by state
+    const statesFilter = states.filter((state, index) => states.indexOf(state) === index)
+    setStates(statesFilter)
+
+  }, [])
+
+  function filterByState(e) {
+    const stateClick = e.target.id
+    const filter = data?.filter(info => info.location.state === stateClick)
+    setFilterState(filter)
+  }
+
   return (
   <>
     <Header.Container>
@@ -22,64 +48,61 @@ const App = () => {
         <Body.Grid>
           <Body.BoxFilter>
             <Body.FilterTitle>Por Estado</Body.FilterTitle>
-            <Body.OptionsBox>
-              <Body.CheckBox id='check' type='checkbox' />
-              <Body.CheckLabel htmlFor='check'>São Paulo</Body.CheckLabel>
-            </Body.OptionsBox>
+              <Body.CheckWrapper>
+                { states?.map((state, index) =>
+                  <Body.OptionsBox key={index}>
+                    <Body.CheckBox onClick={filterByState} name='stateName' id={state} type='radio' />
+                    <Body.CheckLabel htmlFor={state}>{state}</Body.CheckLabel>
+                  </Body.OptionsBox>
+                ) }
+              </Body.CheckWrapper>
           </Body.BoxFilter>
 
           <Body.BoxOrder>
             <Body.OrderWrapper>
-              <Body.OrderText>Exibindo 9 de 25 itens</Body.OrderText>
+              <Body.OrderText>
+                Exibindo { filterState?.length || data?.length } de { filterState?.length || data?.length }
+              </Body.OrderText>
               <Body.OrderText>Ordenar por: Nome</Body.OrderText>
             </Body.OrderWrapper>
           </Body.BoxOrder>
 
           <Body.CardWrapper>
-            <Body.CardBox>
-              <Body.CardInside>
-                <Body.CardImage />
-                <Body.CardName>Joselino Alves</Body.CardName>
-                <Body.CardStreet>Rua Espirito Santo, 2096</Body.CardStreet>
-                <Body.CardAddress>
-                  São José de Ribamar
-                  Paraná - CEP: 96895
-                </Body.CardAddress>
-              </Body.CardInside>
-            </Body.CardBox>
-            <Body.CardBox>
-              <Body.CardInside>
-                <Body.CardImage />
-                <Body.CardName>Joselino Alves</Body.CardName>
-                <Body.CardStreet>Rua Espirito Santo, 2096</Body.CardStreet>
-                <Body.CardAddress>
-                  São José de Ribamar
-                  Paraná - CEP: 96895
-                </Body.CardAddress>
-              </Body.CardInside>
-            </Body.CardBox>
-            <Body.CardBox>
-              <Body.CardInside>
-                <Body.CardImage />
-                <Body.CardName>Joselino Alves</Body.CardName>
-                <Body.CardStreet>Rua Espirito Santo, 2096</Body.CardStreet>
-                <Body.CardAddress>
-                  São José de Ribamar
-                  Paraná - CEP: 96895
-                </Body.CardAddress>
-              </Body.CardInside>
-            </Body.CardBox>
-            <Body.CardBox>
-              <Body.CardInside>
-                <Body.CardImage />
-                <Body.CardName>Joselino Alves</Body.CardName>
-                <Body.CardStreet>Rua Espirito Santo, 2096</Body.CardStreet>
-                <Body.CardAddress>
-                  São José de Ribamar
-                  Paraná - CEP: 96895
-                </Body.CardAddress>
-              </Body.CardInside>
-            </Body.CardBox>
+            { filterState ? filterState.map((info, index) => 
+              <Body.CardBox key={index}>
+                <Body.CardInside>
+                  <Body.CardImage src={info.picture.large} />
+                  <Body.CardName>{ info.name.first } { info.name.last }</Body.CardName>
+                  <Body.CardStreet>
+                    { `${info.location.street.slice(5)}, ${info.location.street.slice(0, 5)}` }
+                  </Body.CardStreet>
+                  <Body.CardAddress>
+                    {
+                      `${info.location.city} ${info.location.state}
+                      CEP: ${info.location.postcode}`
+                    }
+                  </Body.CardAddress>
+                </Body.CardInside>
+              </Body.CardBox>
+            )       
+            
+            : data?.map((info, index) =>
+              <Body.CardBox key={index}>
+                <Body.CardInside>
+                  <Body.CardImage src={info.picture.large} />
+                  <Body.CardName>{ info.name.first } { info.name.last }</Body.CardName>
+                  <Body.CardStreet>
+                    { `${info.location.street.slice(5)}, ${info.location.street.slice(0, 5)}` }
+                  </Body.CardStreet>
+                  <Body.CardAddress>
+                    {
+                      `${info.location.city} ${info.location.state}
+                      CEP: ${info.location.postcode}`
+                    }
+                  </Body.CardAddress>
+                </Body.CardInside>
+              </Body.CardBox>
+            )}
           </Body.CardWrapper>
         </Body.Grid>
       </Body.Wrapper>
