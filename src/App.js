@@ -6,35 +6,66 @@ import * as Footer from './components/Footer'
 
 const App = () => {
 
-  const [data, setData] = useState(null)
-  const [states, setStates] = useState(null)
-  const [filterState, setFilterState] = useState(null)
+  const [data, setData] = useState([])
+  const [error, setError] = useState(false)
+  const [states, setStates] = useState([])
+  const [name, setName] = useState('')
+  const [filter, setFilter] = useState(null)
 
   useEffect(async () => {
-    // eslint-disable-next-line no-undef
-    const request = await fetch('http://localhost:8080/results')
-    const response = await request.json()
-    setData(response)
-
-    const states = response.map(({ location }) => location.state)
-    // Return the states to provider the filter by state
-    const statesFilter = states.filter((state, index) => states.indexOf(state) === index)
-    setStates(statesFilter)
-
+    try {
+      /*
+       *  Block to make request to api and set the stater or return a error
+      */
+      // eslint-disable-next-line no-undef
+      const request = await fetch('http://localhost:8080/results')
+      const response = await request.json()
+      setData(response)
+      const states = response.map(({ location }) => location.state)
+      // Return the states to provider the filter by state
+      const statesFilter = states.filter((state, index) => states.indexOf(state) === index)
+      setStates(statesFilter)
+    } catch {
+      setError(true)
+    }
   }, [])
 
-  function filterByState(e) {
-    const stateClick = e.target.id
-    const filter = data?.filter(info => info.location.state === stateClick)
-    setFilterState(filter)
+  function filterPerson(event) {
+    // Save the type event
+    const typeEvent = event.type
+
+    if(typeEvent === 'click') {
+      const stateCheckName = event.target.id
+      const filterByState = data?.filter(({ location }) => location.state === stateCheckName)
+      setFilter(filterByState)
+    } else {
+      // Set name to state
+      const nameFilter = event.target.value
+      setName(nameFilter)
+      const filterByName =
+        data?.filter(({ name }) => 
+          name.first.search(nameFilter) !== -1 ||
+          name.last.search(nameFilter) !== -1)
+      setFilter(filterByName)
+    }
+
   }
 
   return (
   <>
     <Header.Container>
       <Header.Wrapper>
-        <Header.LogoImage src='https://raw.githubusercontent.com/juntossomosmais/frontend-challenge/master/logo.svg' alt='Esta imagem é a logo da Juntos Somos Mais' />
-        <Header.Input placeholder='Buscar aqui' />
+
+        <Header.LogoImage
+          src='https://raw.githubusercontent.com/juntossomosmais/frontend-challenge/master/logo.svg'
+          alt='Esta imagem é a logo da Juntos Somos Mais'
+        />
+
+        <Header.Input 
+          onChange={filterPerson}
+          value={name}
+          placeholder='Buscar aqui' 
+        />
         <Header.ButtonGrey />
         <Header.ButtonGrey />
       </Header.Wrapper>
@@ -51,7 +82,12 @@ const App = () => {
               <Body.CheckWrapper>
                 { states?.map((state, index) =>
                   <Body.OptionsBox key={index}>
-                    <Body.CheckBox onClick={filterByState} name='stateName' id={state} type='radio' />
+                    <Body.CheckBox
+                      onClick={filterPerson}
+                      name='stateName'
+                      id={state}
+                      type='radio'
+                    />
                     <Body.CheckLabel htmlFor={state}>{state}</Body.CheckLabel>
                   </Body.OptionsBox>
                 ) }
@@ -61,48 +97,36 @@ const App = () => {
           <Body.BoxOrder>
             <Body.OrderWrapper>
               <Body.OrderText>
-                Exibindo { filterState?.length || data?.length } de { filterState?.length || data?.length }
+                { `Exibindo ${!filter ? data?.length : filter?.length} de ${data?.length}` }
               </Body.OrderText>
               <Body.OrderText>Ordenar por: Nome</Body.OrderText>
             </Body.OrderWrapper>
           </Body.BoxOrder>
 
           <Body.CardWrapper>
-            { filterState ? filterState.map((info, index) => 
-              <Body.CardBox key={index}>
-                <Body.CardInside>
-                  <Body.CardImage src={info.picture.large} />
-                  <Body.CardName>{ info.name.first } { info.name.last }</Body.CardName>
-                  <Body.CardStreet>
-                    { `${info.location.street.slice(5)}, ${info.location.street.slice(0, 5)}` }
-                  </Body.CardStreet>
-                  <Body.CardAddress>
-                    {
-                      `${info.location.city} ${info.location.state}
-                      CEP: ${info.location.postcode}`
-                    }
-                  </Body.CardAddress>
-                </Body.CardInside>
-              </Body.CardBox>
-            )       
-            
-            : data?.map((info, index) =>
-              <Body.CardBox key={index}>
-                <Body.CardInside>
-                  <Body.CardImage src={info.picture.large} />
-                  <Body.CardName>{ info.name.first } { info.name.last }</Body.CardName>
-                  <Body.CardStreet>
-                    { `${info.location.street.slice(5)}, ${info.location.street.slice(0, 5)}` }
-                  </Body.CardStreet>
-                  <Body.CardAddress>
-                    {
-                      `${info.location.city} ${info.location.state}
-                      CEP: ${info.location.postcode}`
-                    }
-                  </Body.CardAddress>
-                </Body.CardInside>
-              </Body.CardBox>
-            )}
+            { error && <p>Error ao buscar os dados!</p> }
+            { console.log(filter) }
+            { !filter ? data.map((info, index) => 
+                <Body.CardComponent
+                  key={index}
+                  image={info.picture.large}
+                  firstName={info.name.first}
+                  lastName={info.name.last}
+                  location={info.location}
+                />
+              ) 
+              :
+              filter?.map((info, index) =>
+                <Body.CardComponent
+                  key={index}
+                  image={info.picture.large}
+                  firstName={info.name.first}
+                  lastName={info.name.last}
+                  location={info.location}
+                />              
+              )
+              
+            }
           </Body.CardWrapper>
         </Body.Grid>
       </Body.Wrapper>
