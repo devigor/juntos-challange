@@ -1,6 +1,4 @@
 /* eslint-disable react/prop-types */
-import PropTypes from 'prop-types'
-
 import { Container, Wrapper, Grid } from './Wrapper'
 import { SpanPath } from './SpanPath'
 import { Title } from './Title'
@@ -38,11 +36,6 @@ export const CardComponent = ({
   )
 }
 
-CardComponent.protoTypes = {
-  data: PropTypes.array.isRequired
-}
-
-
 export {
   Container,
   Wrapper,
@@ -59,10 +52,4 @@ export {
   OrderText,
   OrderWrapper,
   CardWrapper,
-  CardBox,
-  CardInside,
-  CardImage,
-  CardName,
-  CardStreet,
-  CardAddress
 }

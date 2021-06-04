@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 
-import * as Header from './components/Header'
+import { Header } from './components/Header'
 import * as Body from './components/Body'
 import * as Footer from './components/Footer'
 
 const App = () => {
 
   const [data, setData] = useState([])
-  const [error, setError] = useState(false)
   const [states, setStates] = useState([])
   const [name, setName] = useState('')
   const [filter, setFilter] = useState(null)
@@ -17,7 +16,7 @@ const App = () => {
       /*
        *  Block to make request to api and set the stater or return a error
       */
-      // eslint-disable-next-line no-undef
+     // eslint-disable-next-line no-undef
       const request = await fetch('http://localhost:8080/results')
       const response = await request.json()
       setData(response)
@@ -25,8 +24,8 @@ const App = () => {
       // Return the states to provider the filter by state
       const statesFilter = states.filter((state, index) => states.indexOf(state) === index)
       setStates(statesFilter)
-    } catch {
-      setError(true)
+    } catch(e) {
+      console.log(e)
     }
   }, [])
 
@@ -53,23 +52,8 @@ const App = () => {
 
   return (
   <>
-    <Header.Container>
-      <Header.Wrapper>
-
-        <Header.LogoImage
-          src='https://raw.githubusercontent.com/juntossomosmais/frontend-challenge/master/logo.svg'
-          alt='Esta imagem é a logo da Juntos Somos Mais'
-        />
-
-        <Header.Input 
-          onChange={filterPerson}
-          value={name}
-          placeholder='Buscar aqui' 
-        />
-        <Header.ButtonGrey />
-        <Header.ButtonGrey />
-      </Header.Wrapper>
-    </Header.Container>
+    
+    <Header filterPerson={filterPerson} value={name} />
 
     <Body.Container>
       <Body.Wrapper>
@@ -104,9 +88,7 @@ const App = () => {
           </Body.BoxOrder>
 
           <Body.CardWrapper>
-            { error && <p>Error ao buscar os dados!</p> }
-            { console.log(filter) }
-            { !filter ? data.map((info, index) => 
+            { !filter ? data?.map((info, index) => 
                 <Body.CardComponent
                   key={index}
                   image={info.picture.large}
